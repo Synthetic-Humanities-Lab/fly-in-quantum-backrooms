@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#17160e" />
+    <meta
+      name="description"
+      content="A small fly.ai inhabitant in a reconstruction of Quantum Backrooms Floor 1."
+    />
+    <title>Fly in Quantum Backrooms</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main id="world" aria-label="Quantum Backrooms Floor 1"></main>
+    <button id="map-button" aria-label="Expand minimap" aria-expanded="false">
+      <canvas
+        id="map"
+        width="840"
+        height="840"
+        aria-label="Fly-relative map of the changing maze"
+      ></canvas>
+    </button>
+    <div id="welcome" class="panel">
+      <h1>Fly in Quantum Backrooms</h1>
+      <p>Floor 1. A small fly inhabits a changing world.</p>
+      <div class="actions">
+        <button id="start" disabled>Preparing…</button>
+      </div>
+      <div id="loading" hidden>
+        <progress id="progress" max="1" value="0"></progress>
+        <p id="load-status" role="status">Loading the fly…</p>
+      </div>
+      <p class="muted">
+        The full fly.ai model runs in this browser.<br />First load: 139 MB.
+        Sound starts off.
+      </p>
+    </div>
+    <nav id="controls" aria-label="Viewing controls" hidden>
+      <div class="camera-buttons" aria-label="Camera">
+        <button data-view="chase" aria-pressed="true">Follow</button
+        ><button data-view="shoulder" aria-pressed="false">Over shoulder</button
+        ><button data-view="first" aria-pressed="false">First person</button>
+      </div>
+      <button id="pause" aria-label="Pause">Pause</button
+      ><button id="reset">Restart</button
+      ><button id="sound" aria-pressed="false">Sound off</button
+      ><a
+        id="original-game"
+        href="https://backrooms.mothquantum.com/"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Play Quantum Backrooms ↗</a
+      >
+    </nav>
+    <div id="error" class="panel" role="alert" hidden>
+      <h2 id="error-title">The fly could not start</h2>
+      <p id="error-message"></p>
+      <div class="actions">
+        <button id="retry">Retry model</button>
+      </div>
+    </div>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>

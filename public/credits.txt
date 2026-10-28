@@ -1,0 +1,70 @@
+FLY IN QUANTUM BACKROOMS — FLOOR 1
+Independent reconstruction, revision 03f, public viewer release 2026-10-27.
+
+World reference: Moth Quantum Backrooms, main First Person / Floor 1 / Hard.
+https://backrooms.mothquantum.com/
+Client deployment inspected: dpl_9ZncUQFsQuGY4Zu6KuFQXBE2NJBL.
+Moth game code, artwork, logos and recordings are not bundled. Wallpaper and
+signs are independently authored replacements for the observed motifs.
+The renderer, QPS geometry and maze behavior are reconstructed from the public
+reference. This is not an official Moth or Odyssey release.
+
+Data: unmodified public Floor 1 IQM file, level_1_final_iqm.
+https://backrooms.mothquantum.com/levels/iqm-level-1.json
+Downloaded 2026-10-23; 17,198 bytes.
+SHA256: 9a67b83caea132e74dad104ac5f84c11b2d5e79d8284b41d7ed9a5d47d89f2d6
+36 qubits, 6 x 6 rooms, 60 couplings, 16 retained measurement records.
+Raw retained weights total 1/256; the loader normalizes them to 1/16 each.
+Measurements, expectation values, couplings and annotations are preserved.
+The active subset is conditioned on the original wall-observation vote mask.
+The main mode's AND rule supplies targets to persistent per-wall states.
+The displayed wall mosaic is not itself a single hardware measurement.
+No live QPU computation or new provider execution occurs.
+
+Floor 1 contains the QPS. Collection, sanity death, hunting and progression
+are disabled. The radiation-room screen glow follows the fly and freezes with
+the simulation. An independently authored Cleanroom-style entity is present
+from startup, outside the opening camera views, and wanders without a target. This requested adaptation
+replaces the original QPS-triggered hunt. It cannot harm or collide with the fly.
+The fly senses its local silhouette, occluded by nearer walls. Its separate RNG
+and movement never observe the maze or hold walls open.
+See assets/CLEANROOM-NOTICE.txt for asset provenance and approximation limits.
+
+Continuous fly embodiment applies the original wall-centre observation sector
+at the fly's continuous position and heading. Neural feature rays and the
+corner map retain separate fields of view. Spectator cameras affect none of
+these inputs. A wall cannot become blocking through the occupied fly body;
+that narrow collision adapter is separate from the reference-mode simulation.
+The fly body is 1% of room width. The map is enlarged for legibility and its
+transitional strokes use a deterministic simulation-time presentation phase.
+
+fly.ai: Copyright (c) 2026 alextitonis. MIT license in model/FLY-AI-LICENSE.txt.
+https://github.com/alextitonis/fly.ai
+Pinned numerical implementation: 5e931b8dc4856550565c5fa129d3d0c055af3dd1.
+Browser numerical runtime and lossless model export reused from Doug Stark's
+Drosophila Critic. This version adds explicit visual-population injections;
+the network weights, neuron count and PCG64 noise are unchanged.
+
+MaleCNS v1.0 connectome: FlyEM (HHMI Janelia), University of Cambridge,
+MRC Laboratory of Molecular Biology, and Google Research.
+Dataset licensed CC BY 4.0: https://creativecommons.org/licenses/by/4.0/
+https://male-cns.janelia.org/
+https://github.com/alextitonis/fly.ai/releases/tag/brain-v1
+Changes: upstream fly.ai derives signed normalized weights from synapse counts
+and predicted neurotransmitters; Drosophila Critic exports those arrays
+losslessly for browsers; this experiment selects named visual and motor cells.
+No endorsement by these institutions is implied.
+
+Anatomical display: NeuroMechFly v2 / NeLy-EPFL/flygym, Apache 2.0.
+Full license and conversion notice in assets/fly/LICENSE.txt and NOTICE.txt.
+https://github.com/NeLy-EPFL/flygym
+The female anatomical exemplar is not anatomically registered to the male CNS.
+Display scaling, orientation and wing animation are illustrative.
+
+Three.js: Copyright 2010–2025 three.js authors. MIT license in
+vendor/THREE-LICENSE.txt. https://threejs.org/
+
+The visual encoder, attention/scanning input, tonic forward drive, neural
+readout scale, collision brake and kinematic flight are authored adapters.
+They are not a validated biological flight model, a reproduction of Odyssey's
+unpublished integration, or evidence about subjective experience.
