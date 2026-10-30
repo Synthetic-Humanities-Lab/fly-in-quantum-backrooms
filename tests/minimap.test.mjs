@@ -30,7 +30,13 @@ function capture(world, pose, time) {
     clearRect() {},
     fillRect() {},
     translate() {},
-    fill() {},
+    fill() {
+      commands.push({
+        fill: typeof this.fillStyle === "string" ? this.fillStyle : "gradient",
+        path: this.path,
+      });
+    },
+    fillText() {},
     closePath() {},
     beginPath() {
       this.path = [];
@@ -41,7 +47,9 @@ function capture(world, pose, time) {
     lineTo(...p) {
       this.path.push(["line", ...p]);
     },
-    arc() {},
+    arc(...p) {
+      this.path.push(["arc", ...p]);
+    },
     roundRect() {},
     strokeRect(...p) {
       commands.push({ rectangle: p, color: this.strokeStyle });
@@ -108,4 +116,21 @@ test("map animation is deterministic at paused time and consumes no world state 
   world.resample(pose);
   control.resample(pose);
   assert.deepEqual(world.snapshot(), control.snapshot());
+});
+test("active entity marker follows its world position even behind the fly or a wall", () => {
+  const world = new WorldState(data, 82);
+  world.entity.x = pose.x - CELL / 2;
+  world.entity.z = pose.z - CELL / 2;
+  const marker = (heading, time = 1) =>
+    capture(world, { ...pose, heading }, time).find((c) =>
+      c.fill?.startsWith("rgba(255,68,102,"),
+    );
+  const a = marker(0);
+  assert.ok(a);
+  assert.deepEqual(a, marker(Math.PI));
+  assert.deepEqual(a.path[0].slice(1, 3), [118, 118]);
+  world.entity.x += CELL;
+  const b = marker(0);
+  assert.ok(Math.abs(b.path[0][1] - a.path[0][1] - 59) < 1e-9);
+  assert.notDeepEqual(b, marker(0, 1.1));
 });

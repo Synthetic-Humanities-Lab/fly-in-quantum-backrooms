@@ -148,6 +148,30 @@ export function drawMap(canvas, world, observer, time) {
     }
     c.restore();
   }
+  // The source renders active ghosts independently of the observation cone.
+  // Canvas clipping alone determines whether this local map includes the entity.
+  if (world.entity) {
+    const pulse = 0.5 + 0.5 * Math.sin(time / 0.15),
+      pixel = n / 252;
+    c.save();
+    c.shadowColor = "#ff0033";
+    c.shadowBlur = (20 + 15 * pulse) * pixel;
+    c.fillStyle = `rgba(255,68,102,${0.6 + 0.3 * pulse})`;
+    c.beginPath();
+    c.arc(
+      world.entity.x * scale,
+      world.entity.z * scale,
+      (10 + 3 * pulse) * pixel,
+      0,
+      2 * Math.PI,
+    );
+    c.fill();
+    c.fillStyle = "#ff4466";
+    c.font = `bold ${12 * pixel}px monospace`;
+    c.textAlign = "center";
+    c.fillText("Ψ", world.entity.x * scale, world.entity.z * scale + 4 * pixel);
+    c.restore();
+  }
   c.shadowBlur = 0;
   c.setLineDash([(3 * n) / 252, (5 * n) / 252]);
   c.strokeStyle = "rgba(223,215,138,.15)";

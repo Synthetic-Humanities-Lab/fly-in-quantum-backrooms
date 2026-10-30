@@ -1,6 +1,7 @@
 import { Simulation, STEP } from "./simulation.js";
 import { BackroomsScene } from "./scene.js";
-import { AmbientAudio } from "./ambient-audio.js";
+import { AudioController } from "./audio-controller.js";
+import { NeuralView } from "./neural-view.js";
 import { drawMap } from "./minimap.js";
 const $ = (id) => document.getElementById(id);
 let source,
@@ -17,12 +18,17 @@ let queuedMotor = null,
   neuralSeconds = 0,
   modelMs = 0,
   lastStats = 0;
-let sound;
+let neuralView;
+const sound = new AudioController(({ enabled, state, label }) => {
+  $("sound").textContent = label;
+  $("sound").setAttribute("aria-pressed", String(enabled));
+  $("sound").dataset.audioState = state;
+});
 const seed = 2106;
 function updateControls() {
   $("pause").textContent = running ? "Pause" : "Resume";
   $("pause").setAttribute("aria-label", running ? "Pause" : "Resume");
-  if (sound) sound.setRunning(running).catch(() => {});
+  sound.setRunning(running);
 }
 function enter() {
   started = true;
@@ -30,6 +36,7 @@ function enter() {
   $("welcome").hidden = true;
   $("error").hidden = true;
   $("controls").hidden = false;
+  $("neural-panel").hidden = false;
   nextBlock = performance.now();
   updateControls();
 }
@@ -48,6 +55,7 @@ function neuralError(message) {
 }
 function graphicsError(message) {
   running = false;
+  updateControls();
   $("error-title").textContent = "The world could not render";
   $("error-message").textContent = message;
   $("error").hidden = false;
@@ -61,9 +69,9 @@ function loadBrain() {
   $("controls").hidden = true;
   $("error").hidden = true;
   $("welcome").hidden = false;
-  $("loading").hidden = false;
-  $("start").disabled = true;
-  $("start").textContent = "Loading…";
+  $("load-status").textContent = "Loading…";
+  $("load-status").dataset.progress = "0";
+  $("neural-panel").hidden = true;
   const generation = ++loadGeneration;
   worker = new Worker(new URL("./brain.worker.js", import.meta.url), {
     type: "module",
@@ -75,10 +83,15 @@ function loadBrain() {
   worker.onmessage = ({ data }) => {
     if (generation !== loadGeneration) return;
     if (data.type === "progress") {
-      $("progress").value = data.fraction;
-      $("load-status").textContent =
-        `Loading and verifying the full model · ${Math.round(data.fraction * 100)}%`;
+      $("load-status").dataset.progress = String(data.fraction);
     } else if (data.type === "ready") {
+      try {
+        neuralView?.dispose();
+        neuralView = new NeuralView($("neural-panel"), data.spatial);
+      } catch (error) {
+        neuralError(error.message);
+        return;
+      }
       ready = true;
       pending = false;
       enter();
@@ -102,6 +115,7 @@ function frame(now) {
         if (queuedMotor) {
           simulation.commitNeural(queuedMotor.rates);
           neuralSeconds = queuedMotor.neuralSeconds;
+          neuralView.update(queuedMotor.spikes, neuralSeconds);
           modelMs = queuedMotor.milliseconds;
           queuedMotor = null;
           nextBlock = Math.max(nextBlock + 80, now);
@@ -150,7 +164,6 @@ function frame(now) {
   }
   requestAnimationFrame(frame);
 }
-$("start").onclick = () => loadBrain();
 $("retry").onclick = () => loadBrain();
 $("pause").onclick = () => {
   running = !running;
@@ -196,7 +209,7 @@ document.addEventListener("visibilitychange", () => {
 });
 let drag = null;
 $("world").addEventListener("pointerdown", (e) => {
-  if (scene?.view === "first") return;
+  if (!scene || scene.view === "first") return;
   drag = { x: e.clientX, orbit: scene.orbit };
   $("world").setPointerCapture(e.pointerId);
 });
@@ -207,25 +220,15 @@ for (const event of ["pointerup", "pointercancel", "lostpointercapture"])
   $("world").addEventListener(event, () => {
     drag = null;
   });
-$("sound").onclick = async () => {
-  if (sound) {
-    await sound.close();
-    sound = null;
-    $("sound").textContent = "Sound off";
-    $("sound").setAttribute("aria-pressed", "false");
-    return;
-  }
-  try {
-    sound = new AmbientAudio();
-    await sound.setRunning(running);
-    $("sound").textContent = "Sound on";
-    $("sound").setAttribute("aria-pressed", "true");
-  } catch {
-    if (sound) await sound.close();
-    sound = null;
-    $("sound").textContent = "Audio unavailable";
-  }
-};
+$("sound").onclick = () => sound.toggle();
+for (const event of ["pointerdown", "keydown"])
+  document.addEventListener(
+    event,
+    (e) => {
+      if (!e.target.closest?.("#sound")) sound.unlock();
+    },
+    { capture: true },
+  );
 
 try {
   const response = await fetch(new URL("../floor1.json", import.meta.url));
@@ -236,8 +239,7 @@ try {
   scene = new BackroomsScene($("world"), simulation.world, graphicsError);
   requestAnimationFrame(frame);
   await Promise.all([scene.loadFly(), scene.loadEntity()]);
-  $("start").disabled = false;
-  $("start").textContent = "Watch the fly";
+  loadBrain();
 } catch (error) {
   graphicsError(error.message);
 }

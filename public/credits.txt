@@ -1,5 +1,5 @@
 FLY IN QUANTUM BACKROOMS — FLOOR 1
-Independent reconstruction, revision 03f, public viewer release 2026-10-27.
+Independent reconstruction, revision 03g, public viewer release 2026-10-29.
 
 World reference: Moth Quantum Backrooms, main First Person / Floor 1 / Hard.
 https://backrooms.mothquantum.com/
@@ -44,6 +44,13 @@ Pinned numerical implementation: 5e931b8dc4856550565c5fa129d3d0c055af3dd1.
 Browser numerical runtime and lossless model export reused from Doug Stark's
 Drosophila Critic. This version adds explicit visual-population injections;
 the network weights, neuron count and PCG64 noise are unchanged.
+
+The upper-left neural display plots 12,000 activity-independent sampled
+coordinates from the pinned archive, highlighting actual spikes in the last
+committed 80 ms neural block. The full 166,700-neuron model still runs.
+140,638 archive neurons have finite positions; no invented wiring is shown.
+Archive SHA256: cc9bd1ecd00bd703a6fa648bc6ad145c93c7c1ee53debdcc9ce0d1f4305e6aca
+Coordinate export SHA256: b68540c73501d975dc72bee03869527157d26f12bf9330be7b14ffe1b778c8d1
 
 MaleCNS v1.0 connectome: FlyEM (HHMI Janelia), University of Cambridge,
 MRC Laboratory of Molecular Biology, and Google Research.

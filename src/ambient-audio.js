@@ -66,6 +66,8 @@ export class AmbientAudio {
   }
   async setRunning(running) {
     if (this.context.state === "closed") return;
+    // Silence immediately even if an earlier autoplay resume is still pending.
+    this.master.gain.value = running ? 0.85 : 0;
     await (running ? this.context.resume() : this.context.suspend());
   }
   update(time) {

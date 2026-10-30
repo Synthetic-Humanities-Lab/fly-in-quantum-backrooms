@@ -27,19 +27,9 @@
     </button>
     <div id="welcome" class="panel">
       <h1>Fly in Quantum Backrooms</h1>
-      <p>Floor 1. A small fly inhabits a changing world.</p>
-      <div class="actions">
-        <button id="start" disabled>Preparing…</button>
-      </div>
-      <div id="loading" hidden>
-        <progress id="progress" max="1" value="0"></progress>
-        <p id="load-status" role="status">Loading the fly…</p>
-      </div>
-      <p class="muted">
-        The full fly.ai model runs in this browser.<br />First load: 139 MB.
-        Sound starts off.
-      </p>
+      <p id="load-status" role="status">Loading…</p>
     </div>
+    <div id="neural-panel" hidden><span class="neural-label">fly.ai</span></div>
     <nav id="controls" aria-label="Viewing controls" hidden>
       <div class="camera-buttons" aria-label="Camera">
         <button data-view="chase" aria-pressed="true">Follow</button
@@ -48,7 +38,7 @@
       </div>
       <button id="pause" aria-label="Pause">Pause</button
       ><button id="reset">Restart</button
-      ><button id="sound" aria-pressed="false">Sound off</button
+      ><button id="sound" aria-pressed="true">Sound on</button
       ><a
         id="original-game"
         href="https://backrooms.mothquantum.com/"
